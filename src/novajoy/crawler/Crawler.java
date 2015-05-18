@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import com.sun.net.ssl.HttpsURLConnection;
+import com.sun.net.ssl.HttpURLConnection;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.ParsingFeedException;
@@ -108,7 +108,7 @@ public class Crawler extends Thread {
     private String sendPost(String url) throws Exception {
 
         URL obj = new URL(url);
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         //add reuqest header
         con.setRequestMethod("POST");
