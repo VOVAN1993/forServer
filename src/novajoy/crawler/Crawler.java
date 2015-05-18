@@ -1,5 +1,7 @@
 package novajoy.crawler;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
@@ -9,6 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import com.sun.net.ssl.HttpsURLConnection;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.ParsingFeedException;
@@ -102,25 +105,56 @@ public class Crawler extends Thread {
 		}
 	}
 
+    private String sendPost(String url) throws Exception {
+
+        URL obj = new URL(url);
+        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + urlParameters);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        return response.toString();
+
+    }
+
     private SyndFeed readfeed(String addr) throws Exception {
         XmlReader reader = null;
         SyndFeed feed1 = null;
         try {
             URL url = new URL( addr);
-            URL url1 = new URL( addr);
             InputStream is = url.openStream();
 
-            InputStreamReader inputStreamReader = new InputStreamReader(url1.openStream(), "UTF-8");
-            int intValueOfChar;
-            String targetString = "";
-            while ((intValueOfChar = inputStreamReader.read()) != -1) {
-                targetString += (char) intValueOfChar;
-            }
-            inputStreamReader.close();
+            String s = sendPost(addr);
 //            InputStreamReader isr = new InputStreamReader( is );
 
             String contentType = "UTF-8";
-            log.info(targetString);
+            log.info(s);
 
             reader = new XmlReader(is,contentType);
             feed1 = new SyndFeedInput().build(reader);
