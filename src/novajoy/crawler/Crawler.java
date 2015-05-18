@@ -18,9 +18,16 @@ import com.sun.syndication.io.XmlReader;
 import novajoy.util.db.JdbcManager;
 import novajoy.util.logger.Loggers;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 
 public class Crawler extends Thread {
     private final JdbcManager dbManager;
@@ -147,7 +154,13 @@ public class Crawler extends Thread {
 
     public String f(String url) {
         try {
-            HttpClient client = HttpClientBuilder.create().build();
+
+            HttpParams params = new BasicHttpParams();
+            HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+            HttpProtocolParams.setContentCharset(params, "utf-8");
+            params.setBooleanParameter("http.protocol.expect-continue", false);
+
+            HttpClient client = new DefaultHttpClient(params);
             HttpGet request = new HttpGet(url);
 
             // add request header
@@ -176,12 +189,11 @@ public class Crawler extends Thread {
         XmlReader reader = null;
         SyndFeed feed1 = null;
         try {
-
+            System.out.println("!!!!!!!!!!!!!!!!!!!");
             String s = f(addr);
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.out.println(s);
             InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
-            //log.info(s);
+            log.info(s);
             reader = new XmlReader(stream);
             feed1 = new SyndFeedInput().build(reader);
         } finally {
