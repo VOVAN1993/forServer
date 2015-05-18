@@ -111,6 +111,7 @@ public class Crawler extends Thread {
         //add reuqest header
         con.setRequestMethod("POST");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=windows-1251");
 
         String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
 
@@ -140,20 +141,33 @@ public class Crawler extends Thread {
 
     }
 
+//    private SyndFeed readfeed(String addr) throws Exception {
+//        XmlReader reader = null;
+//        SyndFeed feed1 = null;
+//        try {
+//            String s = sendPost(addr);
+//            InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
+//            log.info(s);
+//            reader = new XmlReader(stream);
+//            feed1 = new SyndFeedInput().build(reader);
+//        } finally {
+//            if (reader != null)
+//                reader.close();
+//        }
+//        return feed1;
+//    }
+
     private SyndFeed readfeed(String addr) throws Exception {
         XmlReader reader = null;
-        SyndFeed feed1 = null;
+        SyndFeed feed = null;
         try {
-            String s = sendPost(addr);
-            InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_16));
-//            log.info(s);
-            reader = new XmlReader(stream);
-            feed1 = new SyndFeedInput().build(reader);
+            reader = new XmlReader(new URL(addr));
+            feed = new SyndFeedInput().build(reader);
         } finally {
             if (reader != null)
                 reader.close();
         }
-        return feed1;
+        return feed;
     }
 
     private boolean insert_item(SyndEntry entry, long feedid)
