@@ -12,6 +12,9 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import com.sun.net.ssl.HttpURLConnection;
+import sun.net.www.protocol.http.HttpURLConnection;
+
+
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.ParsingFeedException;
