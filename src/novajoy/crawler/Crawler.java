@@ -20,8 +20,6 @@ import com.sun.syndication.io.XmlReader;
 import novajoy.util.db.JdbcManager;
 import novajoy.util.logger.Loggers;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class Crawler extends Thread {
     private final JdbcManager dbManager;
     private final long sleepMillis;
@@ -50,13 +48,13 @@ public class Crawler extends Thread {
 
     private void process_reqsts() {
         try {
-            String query = "Select * FROM novajoy_rssfeed WHERE spoiled <> 1";
-            String pquery = "UPDATE novajoy_rssfeed  SET pubDate = ? WHERE id = ?";
+            String query = "Select * FROM Server_rssfeed WHERE spoiled <> 1";
+            String pquery = "UPDATE Server_rssfeed  SET pubDate = ? WHERE id = ?";
 
             Statement stmt = dbManager.createStatement();
             PreparedStatement ps = dbManager.createPreparedStatement(pquery);
 
-            String squery = "UPDATE novajoy_rssfeed  SET spoiled = 1 WHERE id = ?";
+            String squery = "UPDATE Server_rssfeed  SET spoiled = 1 WHERE id = ?";
             PreparedStatement spoiled_statement = dbManager
                     .createPreparedStatement(squery);
 
@@ -166,11 +164,6 @@ public class Crawler extends Thread {
         }
         return feed1;
     }
-    static String convertStreamToString(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
-    }
-
 
     private boolean insert_item(SyndEntry entry, long feedid)
             throws SQLException {
@@ -181,24 +174,24 @@ public class Crawler extends Thread {
             return false;
         }
 
-        String pquery = "INSERT INTO novajoy_rssitem (rssfeed_id, title, description, link, author, pubDate) VALUES(?,?,?,?,?,?)";
+        String pquery = "INSERT INTO Server_rssitem (rssfeed_id, title, description, link, author, pubDate) VALUES(?,?,?,?,?,?)";
         PreparedStatement ps = dbManager.createPreparedStatement(pquery);
 
         ps.setLong(1, feedid);
         ps.setString(2, entry.getTitle());
-        log.info((2, entry.getTitle(        ;
-        ps.setString(3, entry.getDescription().getValue(        ;
-        ps.setString(4, entry.getLink(        ;
-        ps.setString(5, entry.getAuthor(        ;
-        ps.setTimestamp(6, new java.sql.Timestamp(entry.getPublishedDat                				.getTime()        ;
-        ps.executeUpdate        ;
-        return tr    e;
+        ps.setString(3, entry.getDescription().getValue());
+        ps.setString(4, entry.getLink());
+        ps.setString(5, entry.getAuthor());
+        ps.setTimestamp(6, new java.sql.Timestamp(entry.getPublishedDate()
+                .getTime()));
+        ps.executeUpdate();
+        return true;
     }
 
-    private boolean check_already_in(String link) throws SQLExceptio        {
-        String pquery = "Select * FROM novajoy_rssitem WHERE link =         ;
-        PreparedStatement ps = dbManager.createPreparedStatement(pquer        ;
-        ps.setString(1, lin        ;
-        return ps.executeQuery().next    );
+    private boolean check_already_in(String link) throws SQLException {
+        String pquery = "Select * FROM Server_rssitem WHERE link = ?";
+        PreparedStatement ps = dbManager.createPreparedStatement(pquery);
+        ps.setString(1, link);
+        return ps.executeQuery().next();
     }
 }
