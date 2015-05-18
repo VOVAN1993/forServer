@@ -107,15 +107,16 @@ public class Crawler extends Thread {
         SyndFeed feed1 = null;
         try {
             URL url = new URL( addr);
+            URL url1 = new URL( addr);
             InputStream is = url.openStream();
 
-            InputStreamReader inputStreamReader = new InputStreamReader(url.openStream(), "UTF-8");
+            InputStreamReader inputStreamReader = new InputStreamReader(url1.openStream(), "UTF-8");
             int intValueOfChar;
             String targetString = "";
             while ((intValueOfChar = inputStreamReader.read()) != -1) {
                 targetString += (char) intValueOfChar;
             }
-            reader.close();
+            inputStreamReader.close();
 //            InputStreamReader isr = new InputStreamReader( is );
 
             String contentType = "UTF-8";
