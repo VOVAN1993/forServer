@@ -111,6 +111,8 @@ public class Crawler extends Thread {
 //            InputStreamReader isr = new InputStreamReader( is );
 
             String contentType = "UTF-8";
+            log.info(convertStreamToString(is));
+
             reader = new XmlReader(is,contentType);
             feed1 = new SyndFeedInput().build(reader);
         } finally {
@@ -118,6 +120,10 @@ public class Crawler extends Thread {
                 reader.close();
         }
         return feed1;
+    }
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 
 
