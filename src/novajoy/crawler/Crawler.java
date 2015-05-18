@@ -4,15 +4,13 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.sql.*;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
-import sun.net.www.protocol.http.HttpURLConnection;
-
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -21,6 +19,8 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import novajoy.util.db.JdbcManager;
 import novajoy.util.logger.Loggers;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class Crawler extends Thread {
     private final JdbcManager dbManager;
@@ -186,20 +186,19 @@ public class Crawler extends Thread {
 
         ps.setLong(1, feedid);
         ps.setString(2, entry.getTitle());
-        log.info(entry.getTitle());
-        ps.setString(3, entry.getDescription().getValue());
-        ps.setString(4, entry.getLink());
-        ps.setString(5, entry.getAuthor());
-        ps.setTimestamp(6, new java.sql.Timestamp(entry.getPublishedDate()
-                .getTime()));
-        ps.executeUpdate();
-        return true;
+        log.info((2, entry.getTitle(        ;
+        ps.setString(3, entry.getDescription().getValue(        ;
+        ps.setString(4, entry.getLink(        ;
+        ps.setString(5, entry.getAuthor(        ;
+        ps.setTimestamp(6, new java.sql.Timestamp(entry.getPublishedDat                				.getTime()        ;
+        ps.executeUpdate        ;
+        return tr    e;
     }
 
-    private boolean check_already_in(String link) throws SQLException {
-        String pquery = "Select * FROM novajoy_rssitem WHERE link = ?";
-        PreparedStatement ps = dbManager.createPreparedStatement(pquery);
-        ps.setString(1, link);
-        return ps.executeQuery().next();
+    private boolean check_already_in(String link) throws SQLExceptio        {
+        String pquery = "Select * FROM novajoy_rssitem WHERE link =         ;
+        PreparedStatement ps = dbManager.createPreparedStatement(pquer        ;
+        ps.setString(1, lin        ;
+        return ps.executeQuery().next    );
     }
 }
