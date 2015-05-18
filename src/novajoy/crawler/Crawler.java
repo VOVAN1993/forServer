@@ -105,11 +105,13 @@ public class Crawler extends Thread {
         XmlReader reader = null;
         SyndFeed feed1 = null;
         try {
+            URL url = new URL( addr);
+            InputStream is = url.openStream();
+//            InputStreamReader isr = new InputStreamReader( is );
+
             String contentType = "UTF-8";
-            SyndFeedInput input = new SyndFeedInput();
-            feed1 = input.build(new InputStreamReader(new URL(addr).openStream()));
-//            reader = new XmlReader(new URL(addr));
-//			feed = new SyndFeedInput().build(reader);
+            reader = new XmlReader(is,contentType);
+            feed1 = new SyndFeedInput().build(reader);
         } finally {
             if (reader != null)
                 reader.close();
