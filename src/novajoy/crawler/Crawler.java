@@ -1,10 +1,8 @@
 package novajoy.crawler;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.net.URL;
 import java.util.Calendar;
@@ -147,16 +145,10 @@ public class Crawler extends Thread {
         XmlReader reader = null;
         SyndFeed feed1 = null;
         try {
-            URL url = new URL( addr);
-            InputStream is = url.openStream();
-
             String s = sendPost(addr);
-//            InputStreamReader isr = new InputStreamReader( is );
-
-            String contentType = "UTF-8";
+            InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
             log.info(s);
-
-            reader = new XmlReader(is,contentType);
+            reader = new XmlReader(stream);
             feed1 = new SyndFeedInput().build(reader);
         } finally {
             if (reader != null)
