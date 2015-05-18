@@ -100,20 +100,24 @@ public class Crawler extends Thread {
 		}
 	}
 
-	private SyndFeed readfeed(String addr) throws Exception {
-		XmlReader reader = null;
-		SyndFeed feed = null;
-		try {
-			reader = new XmlReader(new URL(addr));
-			feed = new SyndFeedInput().build(reader);
-		} finally {
-			if (reader != null)
-				reader.close();
-		}
-		return feed;
-	}
+    private SyndFeed readfeed(String addr) throws Exception {
+        XmlReader reader = null;
+        SyndFeed feed1 = null;
+        try {
+            String contentType = "UTF-8";
+            SyndFeedInput input = new SyndFeedInput();
+            feed1 = input.build(new InputStreamReader(new URL(addr).openStream()));
+//            reader = new XmlReader(new URL(addr));
+//			feed = new SyndFeedInput().build(reader);
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+        return feed1;
+    }
 
-	private boolean insert_item(SyndEntry entry, long feedid)
+
+    private boolean insert_item(SyndEntry entry, long feedid)
 			throws SQLException {
 
 		if (check_already_in(entry.getLink())) {
