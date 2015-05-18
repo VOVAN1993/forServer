@@ -1,0 +1,46 @@
+{% extends "registration/bar1.html" %}
+
+{% block main_content %}
+<div class="container"></div><div class="container-fluid">
+
+
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="span4 offset4 well">
+                    <legend>Please Log In</legend>
+                    {% if form.errors %}
+                        <span class="errorMess">Incorrect Username or Password!</span>
+                    {% endif %}
+                    <form method="post" action="?next={{ next|default:"/" }}">{% csrf_token %}
+                        <dl>
+                            <dt><label for="id_username">Username:</label>{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</dt>
+                            <dd>{{ form.username }}</dd>
+                            <dt><label for="id_password">Password:</label>{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</dt>
+                            <dd>{{ form.password }}</dd>
+                            <label class="checkbox">
+                                <input type="checkbox" name="remember" value="1"> Remember Me
+                            </label>
+                            <button type="submit" name="submit" class="btn btn-info btn-block">Log in</button>
+                        </dl>
+                    </form>
+                    <button type="button" onclick="location.href='/accounts/passwordReset/'" name="forgot_password" class="btn btn-info btn-block">Forgot password</button>
+                    <button type="button" onclick="location.href='/accounts/register/'" name="register" class="btn btn-info btn-block">Sign in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div><!--/.fluid-container-->
+{% endblock %}
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+</script>
+<script src="/static/bootstrap/js/bootstrap.js">
+</script>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title></title>
+</head>
+<body>
+<p>Enter collection name and sending interval.</p>
+
+<form id="myform">
+    <table border="0" cellspacing="20" cellpadding="0">
+        <tr>
+            <td>Collection Name</td>
+            <td><input type="text" name="nameCollection" id="nameCollection"></td>
+        </tr>
+        <br>
+        <tr>
+            <td> Sending interval</td>
+            <td><select name="delta_sending_time" id="delta_sending_time" size="1">
+                <option value="1h">1 h.</option>
+                <option value="2h">2 h.</option>
+                <option value="4h" selected>4 h.</option>
+                <option value="6h">6 h.</option>
+                <option value="12h">12 h.</option>
+                <option value="24h">24 h.</option>
+                <option value="2d">2 d.</option>
+            </select>
+        </tr>
+        <tr>
+            <td>Format</td>
+            <td><select name="format" id="format" size="1">
+                <option value="pdf">PDF</option>
+                <option value="doc">DOC</option>
+                <option value="html">HTML</option>
+                <option value="epub">EPUB</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Letter subject</td>
+            <td><input type="text" name="subject" id="subject"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

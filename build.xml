@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="novajoy">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="novajoy.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/activation.jar"/>
+        <pathelement location="lib/ant.jar"/>
+        <pathelement location="lib/ini4j-0.5.2.jar"/>
+        <pathelement location="lib/jaxen.jar"/>
+        <pathelement location="lib/jdom-1.1.3.jar"/>
+        <pathelement location="lib/mail.jar"/>
+        <pathelement location="lib/mysql-connector-java-5.1.23-bin.jar"/>
+        <pathelement location="lib/mysql.jar"/>
+        <pathelement location="lib/rome-1.0.jar"/>
+        <pathelement location="lib/xalan.jar"/>
+        <pathelement location="lib/xerces.jar"/>
+        <pathelement location="lib/xml-apis.jar"/>
+        <pathelement location="lib/jtidy-r938.jar"/>
+        <pathelement location="lib/flying_saucer/core-renderer.jar"/>
+        <pathelement location="lib/flying_saucer/iText-2.0.8.jar"/>
+        <pathelement location="lib/flying_saucer/xml-apis-xerces-2.9.1.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="novajoy.classpath"/>
+        </javac>
+    </target>
+    <target name="start_crawler">
+        <java classname="novajoy.crawler.StartCrawling" failonerror="true" fork="yes">
+            <classpath refid="novajoy.classpath"/>
+        </java>
+    </target>
+    <target name="start_packer">
+        <java classname="novajoy.packer.Main" failonerror="true" fork="yes">
+            <classpath refid="novajoy.classpath"/>
+        </java>
+    </target>
+    <target name="start_sender">
+        <java classname="novajoy.sender.Main" failonerror="true" fork="yes">
+            <classpath refid="novajoy.classpath"/>
+        </java>
+	</target>
+	<target name="start_janitor">
+        <java classname="novajoy.janitor.StartJanitor" failonerror="true" fork="yes">
+            <classpath refid="novajoy.classpath"/>
+        </java>
+    </target>
+</project>
