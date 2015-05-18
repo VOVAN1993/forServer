@@ -112,7 +112,7 @@ public class Crawler extends Thread {
         con.setRequestMethod("POST");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-        String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+//        String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
 
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -126,7 +126,7 @@ public class Crawler extends Thread {
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream(),"UTF-8"));
+                new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_16));
         String inputLine;
         StringBuffer response = new StringBuffer();
 
@@ -145,7 +145,7 @@ public class Crawler extends Thread {
         SyndFeed feed1 = null;
         try {
             String s = sendPost(addr);
-            InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
+            InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_16));
 //            log.info(s);
             reader = new XmlReader(stream);
             feed1 = new SyndFeedInput().build(reader);
