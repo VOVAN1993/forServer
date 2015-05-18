@@ -178,9 +178,10 @@ public class Crawler extends Thread {
         try {
 
             String s = f(addr);
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             System.out.println(s);
             InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
-            log.info(s);
+            //log.info(s);
             reader = new XmlReader(stream);
             feed1 = new SyndFeedInput().build(reader);
         } finally {
