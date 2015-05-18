@@ -112,7 +112,7 @@ public class Crawler extends Thread {
         con.setRequestMethod("POST");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-        String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+        String urlParameters = "sn=C02G8416DRJM&cn=&locale=utf8&caller=&num=12345";
 
         // Send post request
         con.setDoOutput(true);
@@ -135,7 +135,7 @@ public class Crawler extends Thread {
             response.append(inputLine);
         }
         in.close();
-
+        System.out.println(response.toString());
         //print result
         return response.toString();
 
