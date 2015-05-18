@@ -1,5 +1,6 @@
 package novajoy.crawler;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.net.URL;
@@ -15,7 +16,6 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import novajoy.util.db.JdbcManager;
 import novajoy.util.logger.Loggers;
-import java.io.InputStream;
 
 public class Crawler extends Thread {
 	private final JdbcManager dbManager;
@@ -108,10 +108,18 @@ public class Crawler extends Thread {
         try {
             URL url = new URL( addr);
             InputStream is = url.openStream();
+
+            InputStreamReader inputStreamReader = new InputStreamReader(url.openStream(), "UTF-8");
+            int intValueOfChar;
+            String targetString = "";
+            while ((intValueOfChar = inputStreamReader.read()) != -1) {
+                targetString += (char) intValueOfChar;
+            }
+            reader.close();
 //            InputStreamReader isr = new InputStreamReader( is );
 
             String contentType = "UTF-8";
-            log.info(convertStreamToString(is));
+            log.info(targetString);
 
             reader = new XmlReader(is,contentType);
             feed1 = new SyndFeedInput().build(reader);
