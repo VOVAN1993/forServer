@@ -127,6 +127,7 @@ public class Crawler extends Thread {
 
 		ps.setLong(1, feedid);
 		ps.setString(2, entry.getTitle());
+		log.info(entry.getTitle());
 		ps.setString(3, entry.getDescription().getValue());
 		ps.setString(4, entry.getLink());
 		ps.setString(5, entry.getAuthor());
