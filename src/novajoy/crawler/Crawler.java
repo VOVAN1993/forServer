@@ -48,13 +48,13 @@ public class Crawler extends Thread {
 
     private void process_reqsts() {
         try {
-            String query = "Select * FROM Server_rssfeed WHERE spoiled <> 1";
-            String pquery = "UPDATE Server_rssfeed  SET pubDate = ? WHERE id = ?";
+            String query = "Select * FROM novajoy_rssfeed WHERE spoiled <> 1";
+            String pquery = "UPDATE novajoy_rssfeed  SET pubDate = ? WHERE id = ?";
 
             Statement stmt = dbManager.createStatement();
             PreparedStatement ps = dbManager.createPreparedStatement(pquery);
 
-            String squery = "UPDATE Server_rssfeed  SET spoiled = 1 WHERE id = ?";
+            String squery = "UPDATE novajoy_rssfeed  SET spoiled = 1 WHERE id = ?";
             PreparedStatement spoiled_statement = dbManager
                     .createPreparedStatement(squery);
 
@@ -174,7 +174,7 @@ public class Crawler extends Thread {
             return false;
         }
 
-        String pquery = "INSERT INTO Server_rssitem (rssfeed_id, title, description, link, author, pubDate) VALUES(?,?,?,?,?,?)";
+        String pquery = "INSERT INTO novajoy_rssitem (rssfeed_id, title, description, link, author, pubDate) VALUES(?,?,?,?,?,?)";
         PreparedStatement ps = dbManager.createPreparedStatement(pquery);
 
         ps.setLong(1, feedid);
@@ -189,7 +189,7 @@ public class Crawler extends Thread {
     }
 
     private boolean check_already_in(String link) throws SQLException {
-        String pquery = "Select * FROM Server_rssitem WHERE link = ?";
+        String pquery = "Select * FROM novajoy_rssitem WHERE link = ?";
         PreparedStatement ps = dbManager.createPreparedStatement(pquery);
         ps.setString(1, link);
         return ps.executeQuery().next();
